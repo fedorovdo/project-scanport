@@ -26,6 +26,13 @@ func main() {
 		fmt.Printf("IP Address: %s\n", ipAddress)
 	}
 
+	macAddress, err := getMACAddress()
+	if err != nil {
+		fmt.Println("Error getting MAC address:", err)
+	} else {
+		fmt.Printf("MAC Address: %s\n", macAddress)
+	}
+
 	fmt.Printf("Scanning ports on %s...\n", target)
 
 	openPorts := scanPorts(target, startPort, endPort)
@@ -73,4 +80,20 @@ func getLocalIP() (string, error) {
 	}
 
 	return "", fmt.Errorf("No IPv4 address found")
+}
+
+func getMACAddress() (string, error) {
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		return "", err
+	}
+
+	// Select the first non-loopback interface with a MAC address
+	for _, iface := range interfaces {
+		if iface.Flags&net.FlagLoopback == 0 && len(iface.HardwareAddr) > 0 {
+			return iface.HardwareAddr.String(), nil
+		}
+	}
+
+	return "", fmt.Errorf("No MAC address found")
 }

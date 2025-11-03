@@ -37,17 +37,18 @@ func main() {
 
 	openPorts := scanPorts(target, startPort, endPort)
 
-	if len(openPorts) == 0 {
-		fmt.Println("No open ports found.")
-	} else {
-		fmt.Println("Open ports:")
-		for _, port := range openPorts {
-			fmt.Printf("Port %d is open\n", port)
-		}
-	}
+    if len(openPorts) == 0 {
+        fmt.Println("No open ports found.")
+    } else {
+        fmt.Println("Open ports:")
+        for _, port := range openPorts {
+            fmt.Printf("Port %d is open\n", port)
+        }
+    }
 
-	fmt.Print("Press Enter to exit...")
-	fmt.Scanln()
+    // Windows: auto-close console after showing a final message
+    fmt.Println("Все готово")
+    time.Sleep(2 * time.Second)
 }
 
 func scanPorts(target string, startPort, endPort int) []int {
